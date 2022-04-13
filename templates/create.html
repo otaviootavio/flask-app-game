@@ -13,8 +13,23 @@
 
     <div class="form-group">
         <label for="content">Content</label>
-        <textarea name="content" placeholder="Post content"
+        <textarea name="content" placeholder="content"
                   class="form-control">{{ request.form['content'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="nota">nota</label>
+        <textarea name="nota" placeholder="Nota"
+                  class="form-control">{{ request.form['nota'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="link">Link</label>
+        <textarea name="link" placeholder="Link"
+                  class="form-control">{{ request.form['link'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="data">Data</label>
+        <textarea name="data" placeholder="Data"
+                  class="form-control">{{ request.form['data'] }}</textarea>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>

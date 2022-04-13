@@ -1,8 +1,35 @@
-DROP TABLE IF EXISTS posts;
 
-CREATE TABLE posts (
+CREATE TABLE devenvolvedoras (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    site TEXT NOT NULL
+);
+
+
+CREATE TABLE generos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL
+);
+
+CREATE TABLE usuarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    jogo_favorito TEXT NOT NULL
+);
+
+
+CREATE TABLE jogos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    data TEXT NOT NULL,
+    nota INTEGER NOT NULL, 
+    link TEXT NOT NULL
+);
+
+CREATE TABLE comentarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    title TEXT NOT NULL,
     content TEXT NOT NULL
 );
+
