@@ -2,12 +2,11 @@
 
 {% block content %}
     <h1>{% block title %} Welcome to FlaskBlog {% endblock %}</h1>
-    {% for post in posts %}
+    {% for jogos in jogos %}
     <a href="#">
-        <h2 class="text-dark">{{ post['title'] }}</h2>
+        <h2 class="text-dark">Nome {{ jogos['title'] }}</h2>
     </a>
-    <span class="badge badge-primary">{{ post['created'] }}</span>
-    <a href="{{ url_for('edit',id=post['id']) }}">
+    <a href="{{ url_for('edit',id=jogos['id']) }}">
         <span class = "badge badge-danger"> Editar</span>
     </a>
     <hr>

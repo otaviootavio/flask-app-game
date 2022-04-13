@@ -27,11 +27,11 @@ def create_db():
 
     cur = connection.cursor()
 
-    cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
+    cur.execute("INSERT INTO jogos (title, content) VALUES (?, ?)",
                 ('Ola mundo!', 'Content for the first post')
                 )
 
-    cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",('Second Post', 'Content for the second post'))
+    cur.execute("INSERT INTO jogos (title, content) VALUES (?, ?)",('Second Post', 'Content for the second post'))
 
     connection.commit()
     connection.close()
@@ -50,7 +50,7 @@ def post(post_id):
 
 def get_post(post_id):
     conn = get_db_connection()
-    post = conn.execute('SELECT * FROM posts WHERE id = ?',
+    post = conn.execute('SELECT * FROM jogos WHERE id = ?',
                         (post_id,)).fetchone()
     conn.close()
     if post is None:
@@ -61,9 +61,9 @@ def get_post(post_id):
 @app.route('/')
 def index():
     conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM posts').fetchall()
+    jogos = conn.execute('SELECT * FROM jogos').fetchall()
     conn.close()
-    return render_template('index.html', posts=posts)
+    return render_template('index.html', jogos=jogos)
 
 @app.route('/about')
 def about():
@@ -75,13 +75,17 @@ def create():
         if request.method == 'POST':
             title = request.form['title']
             content = request.form['content']
+            link = request.form['link']
+            nota = request.form['nota']
+            data = request.form['data']
 
             if not title:
                 flash('Title is required!')
             else:
                 conn = get_db_connection()
-                conn.execute('INSERT INTO posts (title, content) VALUES (?, ?)',
-                            (title, content))
+                
+                conn.execute('INSERT INTO jogos (title, content, data, nota, link) VALUES (?, ?, ?, ?, ?)',
+                            (title, content, data, nota, link))
                 conn.commit()
                 conn.close()
                 return redirect(url_for('index'))
@@ -90,7 +94,7 @@ def create():
 
 @app.route('/<int:id>/edit', methods=('GET', 'POST'))
 def edit(id):
-    post = get_post(id)
+    jogos = get_post(id)
 
     if request.method == 'POST':
         title = request.form['title']
@@ -100,11 +104,11 @@ def edit(id):
             flash('Title is required!')
         else:
             conn = get_db_connection()
-            conn.execute('UPDATE posts SET title = ?, content = ?'
+            conn.execute('UPDATE jogos SET title = ?, content = ?'
                          ' WHERE id = ?',
                          (title, content, id))
             conn.commit()
             conn.close()
             return redirect(url_for('index'))
 
-    return render_template('edit.html', post=post)
+    return render_template('edit.html', jogos=jogos)
