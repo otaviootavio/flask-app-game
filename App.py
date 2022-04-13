@@ -1,21 +1,52 @@
 from flask import Flask,render_template, request, url_for, flash, redirect
 import sqlite3
 from werkzeug.exceptions import abort
+from flask import g
 
+DATABASE = 'database.db'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '1234'
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
+
+def query_db(query, args=(), one=False):
+    cur = get_db().execute(query, args)
+    rv = cur.fetchall()
+    cur.close()
+    return (rv[0] if rv else None) if one else rv
+
+def create_db():
+    connection = sqlite3.connect('database.db')
+    with open('schema.sql') as f:
+        connection.executescript(f.read())
+
+    cur = connection.cursor()
+
+    cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
+                ('Ola mundo!', 'Content for the first post')
+                )
+
+    cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",('Second Post', 'Content for the second post'))
+
+    connection.commit()
+    connection.close()
+
+
+def get_db_connection():
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
+    
 
 @app.route('/<int:post_id>')
 def post(post_id):
     post = get_post(post_id)
     return render_template('post.html', post=post)
-
-def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-    
 
 def get_post(post_id):
     conn = get_db_connection()
