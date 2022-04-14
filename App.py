@@ -14,6 +14,34 @@ def get_db():
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
+
+@app.route('/<int:id>')
+def post_view(id):
+    post = get_post(id);
+    return render_template('post.html', jogos=post)
+
+@app.route('/search/<palavra>')
+def post_search(palavra):
+    post = procura_palavra(palavra);
+    return render_template('post_pesquisa.html', jogos=post)
+
+def get_post(post_id):
+    conn = get_db_connection()
+    post = conn.execute('SELECT * FROM jogos WHERE id = ?',
+                        (post_id,)).fetchone()
+    conn.close()
+    if post is None:
+        abort(404)
+    return post
+    
+def procura_palavra( palavra ):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    dados = cursor.execute("select * from jogos where title like ?",[palavra]).fetchall()
+    conn.close()
+    return dados
+
+
 def query_db(query, args=(), one=False):
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
@@ -41,21 +69,7 @@ def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
-    
 
-@app.route('/<int:post_id>')
-def post(post_id):
-    post = get_post(post_id)
-    return render_template('post.html', post=post)
-
-def get_post(post_id):
-    conn = get_db_connection()
-    post = conn.execute('SELECT * FROM jogos WHERE id = ?',
-                        (post_id,)).fetchone()
-    conn.close()
-    if post is None:
-        abort(404)
-    return post
 
 
 @app.route('/')
