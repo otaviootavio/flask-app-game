@@ -1,0 +1,15 @@
+{% extends 'base.html' %} 
+{% block content %} 
+{% for jogos in resultado %}
+<a href="#">
+    <h2 class="text-dark">{{ jogos['title'] }}</h2>
+    <text class="font-weight-normal text-decoration-none">Data {{jogos['data']}}</text> <br>
+    <text class="font-weight-normal text-decoration-none">Nota {{jogos['nota']}}</text> <br>
+    <text class="font-weight-normal text-decoration-none">Link {{jogos['link']}}</text> <br>
+    <text class="font-weight-normal text-decoration-none">Conteudo {{jogos['content']}}</text> <br>
+</a>
+<a href="{{ url_for('edit',id=jogos['id']) }}">
+    <span class = "badge badge-danger"> Editar</span>
+</a>
+{% endfor %} 
+{% endblock %}
