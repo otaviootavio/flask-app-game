@@ -35,16 +35,15 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="{{ url_for('about') }}">About</a>
+            <a class="nav-link" href="{{ url_for('about') }}">Sobre</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{url_for('create')}}">New Post</a>
+            <a class="nav-link" href="{{url_for('create')}}">Novo Jogo</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('pesquisa')}}">Pesquisar</a>
           </li>
         </ul>
-        <form  class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
       </div>
     </nav>
     <div class="container">

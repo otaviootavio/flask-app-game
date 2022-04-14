@@ -1,24 +1,20 @@
-{% extends 'base.html' %} {% block content %}
-{% for jogos in jogos%}
-<div>
-  <h2>{{ jogos['title'] }} </h2>
-  <text class="font-weight-normal text-decoration-none"
-    >Data: {{jogos['data']}}</text
-  >
-  <br />
-  <text class="font-weight-normal text-decoration-none"
-    >Nota: {{jogos['nota']}}</text
-  >
-  <br />
-  <text class="font-weight-normal text-decoration-none"
-    >Link: {{jogos['link']}}</text
-  >
-  <br />
-  <text class="font-weight-normal text-decoration-none"
-    >Conteudo: {{jogos['content']}}</text
-  >
-  <br />
-  <p>Jogos: {{ jogos['content'] }}</p>
-</div>
-{% endfor %}
-{% endblock %}
+{% extends 'base.html' %} {% block content %} {% for jogos in jogos%}
+<h2>{{ jogos['title'] }}</h2>
+<text class="font-weight-normal text-decoration-none"
+  >Data: {{jogos['data']}}</text
+>
+<br />
+<text class="font-weight-normal text-decoration-none"
+  >Nota: {{jogos['nota']}}</text
+>
+<br />
+<text class="font-weight-normal text-decoration-none"
+  >Link: {{jogos['link']}}</text
+>
+<br />
+<text class="font-weight-normal text-decoration-none"
+  >Conteudo: {{jogos['content']}}</text
+>
+<br />
+<p>Jogos: {{ jogos['content'] }}</p>
+{% endfor %} {% endblock %}

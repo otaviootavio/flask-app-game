@@ -1,4 +1,4 @@
-from flask import Flask,render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect
 import sqlite3
 from werkzeug.exceptions import abort
 from flask import g
@@ -7,6 +7,7 @@ DATABASE = 'database.db'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '1234'
+
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -20,10 +21,6 @@ def post_view(id):
     post = get_post(id);
     return render_template('post.html', jogos=post)
 
-@app.route('/search/<palavra>')
-def post_search(palavra):
-    post = procura_palavra(palavra);
-    return render_template('post_pesquisa.html', jogos=post)
 
 def get_post(post_id):
     conn = get_db_connection()
@@ -33,20 +30,7 @@ def get_post(post_id):
     if post is None:
         abort(404)
     return post
-    
-def procura_palavra( palavra ):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    dados = cursor.execute("select * from jogos where title like ?",[palavra]).fetchall()
-    conn.close()
-    return dados
 
-
-def query_db(query, args=(), one=False):
-    cur = get_db().execute(query, args)
-    rv = cur.fetchall()
-    cur.close()
-    return (rv[0] if rv else None) if one else rv
 
 def create_db():
     connection = sqlite3.connect('database.db')
@@ -59,7 +43,8 @@ def create_db():
                 ('Ola mundo!', 'Content for the first post')
                 )
 
-    cur.execute("INSERT INTO jogos (title, content) VALUES (?, ?)",('Second Post', 'Content for the second post'))
+    cur.execute("INSERT INTO jogos (title, content) VALUES (?, ?)",
+                ('Second Post', 'Content for the second post'))
 
     connection.commit()
     connection.close()
@@ -71,13 +56,13 @@ def get_db_connection():
     return conn
 
 
-
 @app.route('/')
 def index():
     conn = get_db_connection()
     jogos = conn.execute('SELECT * FROM jogos').fetchall()
     conn.close()
     return render_template('index.html', jogos=jogos)
+
 
 @app.route('/about')
 def about():
@@ -97,7 +82,7 @@ def create():
                 flash('Title is required!')
             else:
                 conn = get_db_connection()
-                
+
                 conn.execute('INSERT INTO jogos (title, content, data, nota, link) VALUES (?, ?, ?, ?, ?)',
                             (title, content, data, nota, link))
                 conn.commit()
@@ -126,3 +111,31 @@ def edit(id):
             return redirect(url_for('index'))
 
     return render_template('edit.html', jogos=jogos)
+
+
+if __name__ == '__main__':
+    app.run()
+
+
+@app.route('/pesquisa', methods=["POST","GET"])
+def pesquisa():
+    if request.method == "POST":
+        user = request.form["nm"]
+        return  redirect (url_for("pesquisa_resultado",resultado=user))
+    else:
+        return render_template('form-pesquisa.html')
+
+@app.route('/resultado/<resultado>', methods=["POST","GET"])
+def pesquisa_resultado(resultado):
+    conn = get_db_connection()
+
+    saida = conn.execute("SELECT * FROM jogos WHERE title LIKE :search",
+    {"search": '%' + resultado + '%'}).fetchall()
+    
+    conn.commit()
+    conn.close()
+    return render_template('resultado_pesquisa.html', resultado = saida)
+
+
+
+
