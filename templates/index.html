@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Welcome to FlaskBlog {% endblock %}</h1>
+    <h1>{% block title %} Bem-vindo ao Projeto de BD {% endblock %}</h1>
     {% for jogos in jogos %}
     <a href="#">
         <h2 class="text-dark">Nome {{ jogos['title'] }}</h2>
+        <text class="font-weight-normal text-decoration-none">Data {{jogos['data']}}</text> <br>
+        <text class="font-weight-normal text-decoration-none">Nota {{jogos['nota']}}</text> <br>
+        <text class="font-weight-normal text-decoration-none">Link {{jogos['link']}}</text> <br>
+        <text class="font-weight-normal text-decoration-none">Conteudo {{jogos['content']}}</text> <br>
     </a>
     <a href="{{ url_for('edit',id=jogos['id']) }}">
         <span class = "badge badge-danger"> Editar</span>

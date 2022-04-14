@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>{% block title %} {{ post['title'] }} {% endblock %}</h2>
-    <span class="badge badge-primary">{{ post['created'] }}</span>
-    <p>{{ post['content'] }}</p>
+    <h2> {{ jogos['title'] }} </h2>
+    <text class="font-weight-normal text-decoration-none">Data: {{jogos['data']}}</text> <br>
+    <text class="font-weight-normal text-decoration-none">Nota: {{jogos['nota']}}</text> <br>
+    <text class="font-weight-normal text-decoration-none">Link: {{jogos['link']}}</text> <br>
+    <text class="font-weight-normal text-decoration-none">Conteudo: {{jogos['content']}}</text> <br>
+    <p>Jogos: {{ jogos['content'] }}</p>
 {% endblock %}
