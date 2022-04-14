@@ -1,13 +1,11 @@
-from flask import Flask, render_template, request, session, url_for, flash, redirect
+from flask import Flask, render_template, request, session, url_for, flash, redirect, g
 import sqlite3
-from numpy import delete
 from werkzeug.exceptions import abort
-from flask import g
 
-DATABASE = 'database.db'
+DATABASE = 'grande.db'
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '1234'
+app.run( debug= True)
 
 
 def get_db():
@@ -16,6 +14,10 @@ def get_db():
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
+
+@app.route('/foo')
+def foo():
+    return "<h1 I'm a red H1 heading!</h1>"
 
 @app.route('/<int:id>')
 def post_view(id):
@@ -31,6 +33,7 @@ def get_post(post_id):
     if post is None:
         abort(404)
     return post
+
 
 
 def create_db():
@@ -60,6 +63,7 @@ def get_db_connection():
 @app.route('/')
 def index():
     conn = get_db_connection()
+    print("hmmm")
     jogos = conn.execute('SELECT * FROM jogos').fetchall()
     conn.close()
     return render_template('index.html', jogos=jogos)
@@ -123,8 +127,6 @@ def edit(id):
     return render_template('edit.html', jogos=jogos)
 
 
-if __name__ == '__main__':
-    app.run()
 
 
 @app.route('/pesquisa', methods=["POST","GET"])

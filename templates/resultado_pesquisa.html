@@ -11,5 +11,8 @@
 <a href="{{ url_for('edit',id=jogos['id']) }}">
     <span class = "badge badge-danger"> Editar</span>
 </a>
+<a href="{{ url_for('delete',id=jogos['id']) }}">
+    <span class = "badge badge-danger"> Deletar</span>
+</a>
 {% endfor %} 
 {% endblock %}
