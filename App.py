@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, session, url_for, flash, redirect
 import sqlite3
+from numpy import delete
 from werkzeug.exceptions import abort
 from flask import g
 
@@ -90,6 +91,13 @@ def create():
                 return redirect(url_for('index'))
         return render_template('create.html')
 
+@app.route('/<int:id>/delete', methods=('GET', 'POST'))
+def delete(id):
+    conn = get_db_connection()
+    conn.execute('DELETE from jogos where id = ?', str(id))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('index')) 
 
 @app.route('/<int:id>/edit', methods=('GET', 'POST'))
 def edit(id):
@@ -98,14 +106,16 @@ def edit(id):
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
+        nota = request.form['nota']
+        link = request.form['link']
+        data = request.form['data']
 
         if not title:
             flash('Title is required!')
         else:
             conn = get_db_connection()
-            conn.execute('UPDATE jogos SET title = ?, content = ?'
-                         ' WHERE id = ?',
-                         (title, content, id))
+            conn.execute('UPDATE jogos SET title = ?, content = ?, data = ?, nota = ?, link = ? WHERE id = ?', (title, content, data, nota, link,id) )
+
             conn.commit()
             conn.close()
             return redirect(url_for('index'))

@@ -5,15 +5,15 @@
 
 <form method="post">
     <div class="form-group">
-        <label for="title">Title</label>
+        <label for="title">Nome</label>
         <input type="text" name="title"
-               placeholder="Post title" class="form-control"
+               placeholder="Nome" class="form-control"
                value="{{ request.form['title'] }}"></input>
     </div>
 
     <div class="form-group">
-        <label for="content">Content</label>
-        <textarea name="content" placeholder="content"
+        <label for="content">Descricao</label>
+        <textarea name="content" placeholder="descricao"
                   class="form-control">{{ request.form['content'] }}</textarea>
     </div>
     <div class="form-group">
